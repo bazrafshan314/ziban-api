@@ -6,12 +6,12 @@
     "paths": {
         "/users/": {
             "get": {
-                "summary": "get a list of all users"
+                "summary": "Get a list of all users"
             }
         },
-        "/users/create/": {
+        "/users/register/": {
             "post": {
-                "summary": "create a new user",
+                "summary": "Create a new user",
                 "parameters": [
                     {
                         "name": "username",
@@ -22,6 +22,48 @@
                     },
                     {
                         "name": "email",
+                        "location": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "location": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/users/login/": {
+            "post": {
+                "summary": "Log a user in",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "location": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "location": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/users/token/": {
+            "post": {
+                "summary": "Get the authentication token of a user",
+                "parameters": [
+                    {
+                        "name": "username",
                         "location": "query",
                         "schema": {
                             "type": "string"
