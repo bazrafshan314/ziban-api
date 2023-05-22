@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import GetTokenView, UserCreateAPIView, UserListAPIView
+from .views import GetTokenView, UserRegisterAPIView, UserListAPIView, UserLoginView
 from django.views.generic import TemplateView
 
 urlpatterns = [
     path("users/", UserListAPIView.as_view(), name="user_list"),
-    path("users/create/", UserCreateAPIView.as_view(), name="user_create"),
+    path("users/register/", UserRegisterAPIView.as_view(), name="user_create"),
+    path("users/login/", UserLoginView.as_view(), name="user_login"),
     path("users/token/", GetTokenView.as_view(), name="get_token"),
     # path("swagger/", UserCreateAPIView.as_view(), name="user_create"),
     path(
