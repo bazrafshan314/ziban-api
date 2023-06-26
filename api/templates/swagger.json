@@ -78,6 +78,57 @@
                     }
                 ]
             }
+        },
+        "/products/{pk}": {
+            "get": {
+                "summary": "Retrieve a product"
+            }
+        },
+        "/products/category_filter/": {
+            "get": {
+                "summary": "List all products in a certain cetegory",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "location": "query",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "category primary key"
+                    }
+                ]
+            }
+        },
+        "/products/add_to_cart/": {
+            "post": {
+                "summary": "Add product to shopping cart of the logged-in user",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "location": "query",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "product primary key"
+                    },
+                    {
+                        "name": "count",
+                        "location": "query",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "how many items to add"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request/Not enough products"
+                    }
+                }
+            }
         }
     },
     "servers": [

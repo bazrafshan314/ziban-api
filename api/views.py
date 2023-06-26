@@ -1,13 +1,15 @@
 from django.contrib.auth import authenticate, login
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
-from .serializers import UserSerializer
-from .models import User
+from .serializers import UserSerializer, ProductSerializer
+from .models import User, Product, Category, CartItem
 
 
 class UserRegisterAPIView(generics.CreateAPIView):
@@ -54,3 +56,37 @@ class GetTokenView(APIView):
             data = {"message": "invalid username or password"}
 
         return Response(data)
+
+
+class ProductViewSet(viewsets.ViewSet):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+
+    def retrieve(self, request, pk=None):
+        product = get_object_or_404(self.queryset, pk=pk)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+
+    @action(detail=False)
+    def category_filter(self, request):
+        pk = request.GET.get("category")
+        category = Category.objects.get(pk=pk)
+        products = Product.objects.filter(category=category)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=["POST"])
+    def add_to_cart(self, request):
+        user = request.user
+        pk = request.data.get("product")
+        count = request.data.get("count")
+        product = get_object_or_404(self.queryset, pk=pk)
+
+        if int(product.inventory) > int(count):
+            cart_item = CartItem(user=user, product=product, count=count)
+            cart_item.save()
+            product.inventory = str(int(product.inventory) - int(count))
+            product.save()
+            return Response("Done")
+        else:
+            return Response("Not enough products", status=status.HTTP_400_BAD_REQUEST)
