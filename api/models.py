@@ -38,7 +38,25 @@ class CartItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.title
+        return self.product.title
+
+
+class Order(models.Model):
+    address = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class OrderItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    count = models.IntegerField()
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.product.title
 
 
 # class Service(models.Model):
@@ -139,28 +157,6 @@ class CartItem(models.Model):
 #     manager = models.ForeignKey(User, on_delete=models.CASCADE)
 #     score = models.IntegerField()
 #     inventory = models.FloatField()
-#     status = models.IntegerField()
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-
-
-# class Orders(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     amount = models.FloatField()
-#     discount = models.FloatField()
-#     gift = models.ForeignKey(Gifts, on_delete=models.CASCADE)
-#     address = models.CharField(max_length=200)
-#     status = models.IntegerField()
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-
-
-# class OrderItems(models.Model):
-#     final_product = models.ForeignKey(FinalProducts, on_delete=models.CASCADE)
-#     order = models.ForeignKey(Orders, on_delete=models.CASCADE)
-#     amount = models.FloatField()
-#     discount = models.FloatField()
-#     count = models.IntegerField()
 #     status = models.IntegerField()
 #     created_at = models.DateTimeField()
 #     updated_at = models.DateTimeField()

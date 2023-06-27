@@ -9,7 +9,7 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from .serializers import UserSerializer, ProductSerializer, CategorySerializer
-from .models import User, Product, Category, CartItem
+from .models import User, Product, Category, CartItem, Order, OrderItem
 
 
 class UserRegisterAPIView(generics.CreateAPIView):
@@ -62,6 +62,10 @@ class ProductViewSet(viewsets.ViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
+    def list(self, request):
+        serializer = ProductSerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
     def retrieve(self, request, pk=None):
         product = get_object_or_404(self.queryset, pk=pk)
         serializer = ProductSerializer(product)
@@ -79,17 +83,41 @@ class ProductViewSet(viewsets.ViewSet):
     def add_to_cart(self, request):
         user = request.user
         pk = request.data.get("product")
-        count = request.data.get("count")
+        count = int(request.data.get("count"))
         product = get_object_or_404(self.queryset, pk=pk)
 
-        if int(product.inventory) > int(count):
-            cart_item = CartItem(user=user, product=product, count=count)
+        if product.inventory - count:
+            cart_item = CartItem.objects.create(user=user, product=product, count=count)
             cart_item.save()
-            product.inventory = str(int(product.inventory) - int(count))
-            product.save()
+            # product.inventory = str(int(product.inventory) - int(count))
+            # product.save()
             return Response("Done")
         else:
             return Response("Not enough products", status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=["POST"])
+    def order(self, request):
+        user = request.user
+        cart = user.cartitem_set.all()
+        address = request.data.get("address")
+        order = Order.objects.create(address=address)
+        order.save()
+        for item in cart:
+            if item.product.inventory > item.count:
+                order_item = OrderItem(
+                    order=order, user=user, product=item.product, count=item.count
+                )
+                order_item.save()
+                item.product.inventory = item.product.inventory - item.count
+                item.product.save()
+                item.delete()
+        if not order.orderitem_set:
+            order.delete()
+            return Response(
+                "Not enough products for any item", status=status.HTTP_400_BAD_REQUEST
+            )
+        else:
+            return Response("Done")
 
 
 class CategoryViewSet(viewsets.ViewSet):

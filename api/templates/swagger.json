@@ -79,6 +79,11 @@
                 ]
             }
         },
+        "/products/": {
+            "get": {
+                "summary": "List all Products"
+            }
+        },
         "/products/{id}": {
             "get": {
                 "summary": "Retrieve a product"
@@ -126,6 +131,32 @@
                     },
                     "400": {
                         "description": "Bad Request/Not enough products"
+                    }
+                }
+            }
+        },
+        "/products/order/": {
+            "post": {
+                "summary": "Order the shopping cart",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "location": "query",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "order address is going to be sent to"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Cart is empty"
+                    },
+                    "406": {
+                        "description": "Not enough credit"
                     }
                 }
             }
