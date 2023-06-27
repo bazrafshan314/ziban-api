@@ -32,4 +32,4 @@ class CategorySerializer(serializers.ModelSerializer):
 class BarberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Barber
-        fields = ["id", "name", "price", "address"]
+        fields = ["id", "name", "price", "address", "image"]
