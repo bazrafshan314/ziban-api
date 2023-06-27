@@ -79,7 +79,7 @@
                 ]
             }
         },
-        "/products/{pk}": {
+        "/products/{id}": {
             "get": {
                 "summary": "Retrieve a product"
             }
@@ -94,7 +94,7 @@
                         "schema": {
                             "type": "integer"
                         },
-                        "description": "category primary key"
+                        "description": "category id"
                     }
                 ]
             }
@@ -109,7 +109,7 @@
                         "schema": {
                             "type": "integer"
                         },
-                        "description": "product primary key"
+                        "description": "product id"
                     },
                     {
                         "name": "count",
@@ -128,6 +128,16 @@
                         "description": "Bad Request/Not enough products"
                     }
                 }
+            }
+        },
+        "/categories/": {
+            "get": {
+                "summary": "List all categories"
+            }
+        },
+        "/categories/{id}": {
+            "get": {
+                "summary": "Get a certain cateogry by id"
             }
         }
     },

@@ -1,12 +1,13 @@
 from django.urls import path
 from rest_framework import routers
 from .views import GetTokenView, UserRegisterAPIView, UserListAPIView, UserLoginView
-from .views import ProductViewSet
+from .views import ProductViewSet, CategoryViewSet
 from django.views.generic import TemplateView
 from django.urls import include
 
 router = routers.DefaultRouter()
 router.register(r"products", ProductViewSet)
+router.register(r"categories", CategoryViewSet)
 
 urlpatterns = [
     path("users/", UserListAPIView.as_view(), name="user_list"),

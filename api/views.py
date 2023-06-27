@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
-from .serializers import UserSerializer, ProductSerializer
+from .serializers import UserSerializer, ProductSerializer, CategorySerializer
 from .models import User, Product, Category, CartItem
 
 
@@ -90,3 +90,17 @@ class ProductViewSet(viewsets.ViewSet):
             return Response("Done")
         else:
             return Response("Not enough products", status=status.HTTP_400_BAD_REQUEST)
+
+
+class CategoryViewSet(viewsets.ViewSet):
+    serializer_class = CategorySerializer
+    queryset = Product.objects.all()
+
+    def list(self, request):
+        serializer = CategorySerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        category = get_object_or_404(self.queryset, pk=pk)
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
