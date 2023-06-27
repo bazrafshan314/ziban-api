@@ -31,5 +31,5 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class BarberSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = Barber
         fields = ["id", "name", "price", "address"]
