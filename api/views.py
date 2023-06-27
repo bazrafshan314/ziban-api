@@ -24,6 +24,7 @@ from .models import (
     Barber,
     Reservation,
 )
+from django.views.decorators.csrf import csrf_exempt
 
 
 class UserRegisterAPIView(generics.CreateAPIView):
@@ -41,6 +42,7 @@ class UserListAPIView(generics.ListAPIView):
 class UserLoginView(APIView):
     permission_classes = []
 
+    @csrf_exempt
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
