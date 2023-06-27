@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-w4+1ssm(zptf0t_!(@-=8go04fc14gxq$l@9zt70zd!r%9hpf1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["api.ziban.alibazrafshan.ir"]
+ALLOWED_HOSTS = ["localhost", "api.ziban.alibazrafshan.ir"]
 
 
 # Application definition
