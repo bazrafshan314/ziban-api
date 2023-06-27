@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-w4+1ssm(zptf0t_!(@-=8go04fc14gxq$l@9zt70zd!r%9hpf1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["api.ziban.alibazrafshan.ir"]
 
 
 # Application definition
@@ -139,9 +139,7 @@ REST_FRAMEWORK = {
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = "None"
