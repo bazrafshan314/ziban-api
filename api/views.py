@@ -8,8 +8,22 @@ from rest_framework.decorators import action
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
-from .serializers import UserSerializer, ProductSerializer, CategorySerializer
-from .models import User, Product, Category, CartItem, Order, OrderItem
+from .serializers import (
+    UserSerializer,
+    ProductSerializer,
+    CategorySerializer,
+    BarberSerializer,
+)
+from .models import (
+    User,
+    Product,
+    Category,
+    CartItem,
+    Order,
+    OrderItem,
+    Barber,
+    Reservation,
+)
 
 
 class UserRegisterAPIView(generics.CreateAPIView):
@@ -122,7 +136,7 @@ class ProductViewSet(viewsets.ViewSet):
 
 class CategoryViewSet(viewsets.ViewSet):
     serializer_class = CategorySerializer
-    queryset = Product.objects.all()
+    queryset = Category.objects.all()
 
     def list(self, request):
         serializer = CategorySerializer(self.queryset, many=True)
@@ -132,3 +146,24 @@ class CategoryViewSet(viewsets.ViewSet):
         category = get_object_or_404(self.queryset, pk=pk)
         serializer = CategorySerializer(category)
         return Response(serializer.data)
+
+
+class BarberViewSet(viewsets.ViewSet):
+    serializer_class = BarberSerializer
+    queryset = Barber.objects.all()
+
+    def list(self, request):
+        serializer = BarberSerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=["POST"])
+    def reserve(self, request):
+        user = request.user
+        pk = request.data.get("barber")
+        time = request.data.get("time")
+        barber = get_object_or_404(self.queryset, pk=pk)
+
+        reservation = Reservation.objects.create(user=user, barber=barber, time=time)
+        reservation.save()
+
+        return Response("Done")

@@ -154,9 +154,6 @@
                     },
                     "400": {
                         "description": "Cart is empty"
-                    },
-                    "406": {
-                        "description": "Not enough credit"
                     }
                 }
             }
@@ -166,9 +163,42 @@
                 "summary": "List all categories"
             }
         },
-        "/categories/{id}": {
+        "/categories/{id}/": {
             "get": {
                 "summary": "Get a certain cateogry by id"
+            }
+        },
+        "/barbers/": {
+            "get": {
+                "summary": "get a list of barbers"
+            }
+        },
+        "/barbers/reserve/": {
+            "post": {
+                "summary": "Order the shopping cart",
+                "parameters": [
+                    {
+                        "name": "barber",
+                        "location": "query",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "reservation barber id"
+                    },
+                    {
+                        "name": "time",
+                        "location": "query",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "reservation time"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
             }
         }
     },

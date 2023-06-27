@@ -59,6 +59,29 @@ class OrderItem(models.Model):
         return self.product.title
 
 
+class Barber(models.Model):
+    name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to="uploads/")
+    address = models.CharField(max_length=200)
+    price = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Reservation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    barber = models.ForeignKey(Barber, on_delete=models.CASCADE)
+    time = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.username + " / " + self.barber.name
+
+
 # class Service(models.Model):
 #     title = models.CharField(max_length=50)
 #     description = models.TextField()
@@ -69,50 +92,11 @@ class OrderItem(models.Model):
 #     updated_at = models.DateTimeField()
 
 
-# class BarberShop(models.Model):
-#     title = models.CharField(max_length=50)
-#     description = models.TextField()
-#     icon = models.ImageField(upload_to="uploads/")
-#     email = models.EmailField()
-#     mobile = models.CharField(max_length=20)
-#     address = models.CharField(max_length=200)
-#     manager = models.ForeignKey(User, on_delete=models.CASCADE)
-#     score = models.IntegerField()
-#     inventory = models.FloatField()
-#     type = models.IntegerField()  # gender
-#     start_at = models.IntegerField()  # zaman shuru kar
-#     end_at = models.IntegerField()  # zaman payan kar
-#     status = models.IntegerField()
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-
-
-# class Barbers(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     barber_shop = models.ForeignKey(BarberShops, on_delete=models.CASCADE)
-#     start_at = models.IntegerField()  # zaman shuru kar
-#     end_at = models.IntegerField()  # zaman payan kar
-#     status = models.IntegerField()
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-
-
 # class ServiceBarberRelates(models.Model):
 #     barber = models.ForeignKey(Barbers, on_delete=models.CASCADE)
 #     service = models.ForeignKey(Services, on_delete=models.CASCADE)
 #     extraCost = models.FloatField()
 #     level = models.IntegerField()
-#     status = models.IntegerField()
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-
-
-# class Reservations(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     barber = models.ForeignKey(Barbers, on_delete=models.CASCADE)
-#     total_cost = models.FloatField()
-#     start_at = models.IntegerField()  # zaman shuru arayesh
-#     end_at = models.IntegerField()  # zaman payan araryesh
 #     status = models.IntegerField()
 #     created_at = models.DateTimeField()
 #     updated_at = models.DateTimeField()
