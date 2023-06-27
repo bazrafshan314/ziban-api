@@ -137,6 +137,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
 }
 
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
